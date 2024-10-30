@@ -7,7 +7,7 @@ import CostResult from './components/CostResult';
 const { Content } = Layout;
 
 const App = () => {
-    const [inputs, setInputs] = useState({route: 1, typeOfGoods: 1});
+    const [inputs, setInputs] = useState({ route: 1, typeOfGoods: 1 });
     const [costs, setCosts] = useState(null);
 
     const handleInputChange = (newInputs) => {
@@ -32,7 +32,7 @@ const App = () => {
         const actualVolume = (boxCount * length * width * height) / 1000000;
         const volumeWeight = (actualVolume * 1000000) / 6000;
         const actualWeight = boxCount * weightPerBox
-        let volume = Math.round(Math.max(actualWeight, volumeWeight)/230*100)/100;
+        let volume = Math.round(Math.max(actualWeight, volumeWeight) / 230 * 100) / 100;
         if (volume < 1) {
             volume = 1
         }
@@ -50,12 +50,12 @@ const App = () => {
             (storageDays <= 90 ? actualVolume * storageDays * 16 :
                 (storageDays <= 180 ? actualVolume * storageDays * 19 :
                     (actualVolume * storageDays * 26))); // 每立方米每天5元
-        storageCost = Math.ceil(storageCost / rate);
+        storageCost = Math.ceil(storageCost / rate) || 0;
 
-        const carriage = Math.ceil(carriageUnit * volume); // 运费
-        const listingFee = Math.ceil(boxCount * itemsPerBox * 1 / rate); // 上架费
-        const outboundFee = Math.ceil(boxCount * itemsPerBox * 12 / rate); // 出库费
-        const unloadingFee = Math.ceil(actualVolume * 110 / rate); // 卸货费
+        const carriage = Math.ceil(carriageUnit * volume) || 0; // 运费
+        const listingFee = Math.ceil(boxCount * itemsPerBox * 1 / rate) || 0; // 上架费
+        const outboundFee = Math.ceil(boxCount * itemsPerBox * 12 / rate) || 0; // 出库费
+        const unloadingFee = Math.ceil(actualVolume * 110 / rate) || 0; // 卸货费
         const returnFee = 0; // 退货费用
         const interceptionFee = 0; // 拦截费用
         const tax = Math.round((carriage + storageCost + listingFee + outboundFee + unloadingFee + returnFee + interceptionFee) * 0.07 / rate);
@@ -63,7 +63,7 @@ const App = () => {
         const totalCost = carriage + storageCost + listingFee + outboundFee + unloadingFee + returnFee + interceptionFee + tax;
 
         // 计算单个商品费用
-        const itemCost = totalCost / (boxCount * itemsPerBox);
+        const itemCost = totalCost / (boxCount * itemsPerBox) || 0;
 
         setCosts({
             total: {
